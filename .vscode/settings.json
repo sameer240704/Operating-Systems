@@ -1,6 +1,7 @@
 {
     "files.associations": {
-        "FCFS[1].C": "cpp"
+        "FCFS[1].C": "cpp",
+        "BAnKERS1[1].C": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
