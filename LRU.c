@@ -1,18 +1,18 @@
 #include <stdio.h>
 
 void LRU(int string[20], int n, int size) {
-    int i, j, page_miss = 0, page_hits = 0;
+    int i, j, k, page_miss = 0, page_hits = 0;
     int frames[n];
 
-    for (i=0 ; i<n ; i++)
+    for(i=0 ; i<n ; i++)
         frames[i] = -1;
 
-    for (i=0 ; i<size ; i++) {
+    for(i=0 ; i<size ; i++) {
         int symbol = string[i];
         int flag = 0;
 
-        for (j=0 ; j<n ; j++) {
-            if (symbol == frames[j]) {
+        for(j=0 ; j<n ; j++) {
+            if(symbol == frames[j]) {
                 flag = 1;
                 break;
             }
@@ -20,52 +20,62 @@ void LRU(int string[20], int n, int size) {
 
         if (flag == 1) {
             printf("\nSymbol : %d\tFrame : ", symbol);
-            for (j=0 ; j<n ; j++)
+            for (j=0 ; j<n ; j++) {
                 if(frames[j] == -1)
                     printf("- ");
                 else
                     printf("%d ", frames[j]);
+            }
             page_hits += 1;
-        } else {
+        } 
+        else {
             int found = 0;
-            for (j = 0; j < n; j++) {
-                if (frames[j] == -1) {
+            for (j=0 ; j<n ; j++) {
+                if(frames[j] == -1) {
                     frames[j] = symbol;
                     found = 1;
                     break;
                 }
             }
 
-            if (found == 0) {
+            if(found == 0) {
                 int pos[20];
-                for (j = 0; j < n; j++) {
+                //Will find the places with the occurrences from the array
+                for(j=0 ; j<n ; j++) {
                     pos[j] = -1;
-                    for (int k = i - 1; k >= 0; k--) {
-                        if (frames[j] == string[k]) {
+                    for(k=(i-1) ; k>=0 ; k--) {
+                        if(frames[j] == string[k]) {
                             pos[j] = k;
                             break;
                         }
                     }
                 }
+                /*
+                {6,1,1,2,0} Frame -> 6 1 2
+                Symbol : 0
 
+                pos[20] = {-1, 2, 3}
+                */
+
+                //Will check for the minimum position in the pos array
                 int min_pos = pos[0];
                 j = 0;
-                for (int k = 1; k < n; k++) {
-                    if (pos[k] == -1 || (min_pos != -1 && min_pos > pos[k])) {
+                for(k=1 ; k<n ; k++) {
+                    if(pos[k] == -1 || (min_pos != -1 && min_pos > pos[k])) {
                         min_pos = pos[k];
                         j = k;
                     }
                 }
-
                 frames[j] = symbol;
             }
 
             printf("\nSymbol : %d\tFrame : ", symbol);
-            for (j = 0; j < n; j++)
+            for (j = 0; j < n; j++) {
                 if(frames[j] == -1)
                     printf("- ");
                 else
                     printf("%d ", frames[j]);
+            }
             page_miss += 1;
         }
     }
