@@ -1,90 +1,82 @@
-#include<stdio.h>
+#include <stdio.h>
 
-void lru(int string[20],int n,int size)
-{
-    //Creating array for block storage
+void LRU(int string[20], int n, int size) {
+    int i, j, page_miss = 0, page_hits = 0;
     int frames[n];
-    //Initializing each block with -1
-    for (int i=0;i<n;i++)
-        frames[i]=-1;
 
-    //Index to insert element
-    int index=-1;
+    for (i=0 ; i<n ; i++)
+        frames[i] = -1;
 
-    //Counters
-    int page_miss=0;
-    int page_hits=0;
+    for (i=0 ; i<size ; i++) {
+        int symbol = string[i];
+        int flag = 0;
 
-    //Traversing each symbol in fifo
-    for (int i=0;i<size;i++)
-    {
-        int symbol=string[i];
-        int flag=0;
-
-        //To signal if array is full or not
-        int full=0;
-
-        for(int j=0;j<n;j++)
-        {
-            if (symbol==frames[j])
-            {
-                flag=1;
+        for (j=0 ; j<n ; j++) {
+            if (symbol == frames[j]) {
+                flag = 1;
                 break;
             }
         }
 
-        if (flag==1)
-        {
-            printf("\nSymbol: %d  Frame: ",symbol);
-            for (int j=0;j<n;j++)
-                printf("%d ",frames[j]);
-            page_hits+=1;
-        }
-        else
-        {
-            if (full==0)
-            {
-                index=(index+1)%n;
-                frames[index]=symbol;
-                page_miss+=1;
-                printf("\nSymbol: %d  Frame: ",symbol);
-                for (int j=0;j<n;j++)
-                    printf("%d ",frames[j]);
+        if (flag == 1) {
+            printf("\nSymbol : %d\tFrame : ", symbol);
+            for (j=0 ; j<n ; j++)
+                if(frames[j] == -1)
+                    printf("- ");
+                else
+                    printf("%d ", frames[j]);
+            page_hits += 1;
+        } else {
+            int found = 0;
+            for (j = 0; j < n; j++) {
+                if (frames[j] == -1) {
+                    frames[j] = symbol;
+                    found = 1;
+                    break;
+                }
             }
-            else
-            {
-                int pos=999;
-                int index=-1;
-                for(int j=0;j<n;j++)
-                {
-                    for (int k=0;k<size;k++)
-                    {
-                        if (frames[j]==string[k])
-                        {
-                            if (pos>k)
-                            {
-                                pos=k;
-                                index=j;
-                                break;
-                            }
-                        } 
+
+            if (found == 0) {
+                int pos[20];
+                for (j = 0; j < n; j++) {
+                    pos[j] = -1;
+                    for (int k = i - 1; k >= 0; k--) {
+                        if (frames[j] == string[k]) {
+                            pos[j] = k;
+                            break;
+                        }
                     }
                 }
-                frames[index]=symbol;
 
+                int min_pos = pos[0];
+                j = 0;
+                for (int k = 1; k < n; k++) {
+                    if (pos[k] == -1 || (min_pos != -1 && min_pos > pos[k])) {
+                        min_pos = pos[k];
+                        j = k;
+                    }
+                }
+
+                frames[j] = symbol;
             }
+
+            printf("\nSymbol : %d\tFrame : ", symbol);
+            for (j = 0; j < n; j++)
+                if(frames[j] == -1)
+                    printf("- ");
+                else
+                    printf("%d ", frames[j]);
+            page_miss += 1;
         }
     }
-    printf("\nPage hits: %d",page_hits);
-    printf("\nPage misses: %d",page_miss);
+    printf("\nPage Hits : %d", page_hits);
+    printf("\nPage Faults : %d", page_miss);
 }
 
-//Main function
-int main(void)
-{
-    int string[]={6,1,1,2,0,3,4,6,0,2,1,2,1,2,0,3,2,1,2,0};
-    int no_frames=3;
-    int size=sizeof(string)/sizeof(int);
-    lru(string,no_frames,size);
+int main() {
+    int string[] = {6,1,1,2,0,3,4,6,0,2,1,2,1,2,0,3,2,1,2,0};
+    int no_frames = 3;
+    int size = sizeof(string) / sizeof(int);
+    LRU(string, no_frames, size);
     return 0;
 }
