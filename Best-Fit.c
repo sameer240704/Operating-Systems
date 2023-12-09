@@ -1,5 +1,6 @@
 #include<conio.h>
 #include<stdio.h>
+#include<limits.h>
 #define MAX 100
 
 int main() {
@@ -33,7 +34,7 @@ int main() {
 
     //Best - Fit
     for(i=0 ; i<process ; i++) {
-        best_fit = temp_size[0] - process_size[i]; 
+        best_fit = INT_MAX; 
         ptr = -1;
         for(j=0 ; j<blocks ; j++) {
             if(temp_size[j] == block_size[j]) {
