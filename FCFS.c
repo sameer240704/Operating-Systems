@@ -3,7 +3,8 @@
 
 int main()
 {
-    int t,s, temp, process, avg_tat = 0, avg_wt = 0, i, j;
+    int t,s, temp, process, i, j;
+    float avg_tat = 0, avg_wt = 0;
     int pid[100],at[100],bt[100],tat[100],wt[100],ct[100];
     //clrscr();
     printf("Enter the list of processes : ");
@@ -37,12 +38,6 @@ int main()
         }
     }
 
-    printf("\n Now the Table is : ");
-    printf("\nPID\tAT\tBT");
-    for(i=0;i<process;i++) {
-	    printf("\nP%d\t%d\t%d",pid[i],at[i],bt[i]);
-    }
-
     ct[0] = at[0] + bt[0]; //Calculating first completion time
     for(i=1 ; i<process ; i++) { //Further completion time
 	    temp = 0;
@@ -59,7 +54,6 @@ int main()
 	    avg_wt += wt[i];
     }
 
-    printf("\n%d %d\n", avg_tat, avg_wt);
     for(i=0 ; i<process ; i++) {
         for(t=0 ; t<i ; t++) {
             if(pid[t] > pid[t+1]) {
@@ -93,7 +87,7 @@ int main()
 	    printf("\nP%d\t%d\t%d\t%d\t%d\t%d",pid[i],at[i],bt[i],ct[i],tat[i],wt[i]);
     }
 
-    printf("\n\nAverage TurnAround Time : %d\nAverage Waiting Time : %d", avg_tat, avg_wt);
+    printf("\n\nAverage TurnAround Time : %.2f\nAverage Waiting Time : %.2f", avg_tat, avg_wt);
     getch();
     return 0;
 }
