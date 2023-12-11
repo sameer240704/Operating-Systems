@@ -50,14 +50,6 @@ void LRU(int string[20], int n, int size) {
                         }
                     }
                 }
-                /*
-                {6,1,1,2,0} Frame -> 6 1 2
-                Symbol : 0
-
-                pos[20] = {-1, 2, 3}
-                */
-
-                //Will check for the minimum position in the pos array
                 int min_pos = pos[0];
                 j = 0;
                 for(k=1 ; k<n ; k++) {
