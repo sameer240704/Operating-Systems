@@ -1,1 +1,3 @@
-allocated == 0
+if(index!=-1){
+        mempart[index]-=req[i];
+    }
